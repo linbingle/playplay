@@ -1,0 +1,42 @@
+name: Deploy to Auth0 staging account
+on:
+  push:
+    branches:
+      - 'releases-v*'
+
+jobs:
+  deploy_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download files from the current repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{env.BRANCH_NAME}}
+      - name: Deploy to release env
+        run: |
+          git checkout
+
+  deploy_staging:
+      runs-on: ubuntu-latest
+      needs: deploy_release
+      environment: staging
+      steps:
+        - name: Download files from the current repository
+          uses: actions/checkout@v3
+          with:
+            ref: ${{env.BRANCH_NAME}}
+        - name: Deploy to staging env
+          run: |
+            git checkout
+  deploy_production:
+    runs-on: ubuntu-latest
+    needs: deploy_staging
+    environment: production
+    steps:
+      - name: Download files from the current repository
+        uses: actions/checkout@v3
+        with:
+          ref: $BRANCH_NAME
+      - name: Deploy to production env
+        run: |
+          git checkout
