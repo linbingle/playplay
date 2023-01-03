@@ -29,6 +29,7 @@ jobs:
           branch: ${{env.BRANCH_NAME}}
 
   deploy_release:
+    needs: branch_out
     runs-on: ubuntu-latest
     steps:
       - name: Download files from the current repository
