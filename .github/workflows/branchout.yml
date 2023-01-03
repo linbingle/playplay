@@ -1,0 +1,63 @@
+name: Branchout for Release
+on:
+  workflow_dispatch:
+    inputs:
+      versionName:
+        description: "Name of version (ie 5.5.0)"
+        required: true
+env:
+  BRANCH_NAME: release-v${{github.event.inputs.versionName}}
+
+jobs:
+  branch_out:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download files from the current repository
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Create release branch
+        run: git checkout -b $BRANCH_NAME
+
+      - name: Push new branch
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          branch: ${{env.BRANCH_NAME}}
+
+  deploy_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download files from the current repository
+        uses: actions/checkout@v3
+        with:
+          ref: $BRANCH_NAME
+      - name: Deploy to release env
+        run: |
+          git checkout
+
+deploy_staging:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download files from the current repository
+        uses: actions/checkout@v3
+        with:
+          ref: $BRANCH_NAME
+      - name: Deploy to release env
+        run: |
+          git checkout
+
+
+  deploy_prod:
+    runs-on: ubuntu-latest
+    steps:
+#      - name: Download files from the current repository
+#        uses: actions/checkout@v3
+#        with:
+#          ref: $BRANCH_NAME
+      - name: Import changes to the Auth0 Production account
+        run: |
+          git checkout
