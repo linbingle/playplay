@@ -39,27 +39,26 @@ jobs:
         run: |
           git checkout
 
-deploy_staging:
-    runs-on: ubuntu-latest
-    environment: staging
-    steps:
-      - name: Download files from the current repository
-        uses: actions/checkout@v3
-        with:
-          ref: $BRANCH_NAME
-      - name: Deploy to release env
-        run: |
-          git checkout
+  deploy_staging:
+      runs-on: ubuntu-latest
+      environment: staging
+      steps:
+        - name: Download files from the current repository
+          uses: actions/checkout@v3
+          with:
+            ref: $BRANCH_NAME
+        - name: Deploy to release env
+          run: |
+            git checkout
 
-
-  deploy_prod:
+  deploy_production:
     runs-on: ubuntu-latest
     environment: production
     steps:
-#      - name: Download files from the current repository
-#        uses: actions/checkout@v3
-#        with:
-#          ref: $BRANCH_NAME
+  #      - name: Download files from the current repository
+  #        uses: actions/checkout@v3
+  #        with:
+  #          ref: $BRANCH_NAME
       - name: Import changes to the Auth0 Production account
         run: |
           git checkout
