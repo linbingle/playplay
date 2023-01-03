@@ -58,10 +58,10 @@ jobs:
     needs: deploy_staging
     environment: production
     steps:
-  #      - name: Download files from the current repository
-  #        uses: actions/checkout@v3
-  #        with:
-  #          ref: $BRANCH_NAME
+      - name: Download files from the current repository
+        uses: actions/checkout@v3
+        with:
+          ref: $BRANCH_NAME
       - name: Deploy to production env
         run: |
           git checkout
